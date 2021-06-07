@@ -1,9 +1,5 @@
 import numpy as np
-import random
-from matplotlib import pyplot as plt
-from matplotlib.lines import Line2D
 from scipy import stats
-from math import isclose
 
 import q1_api as q1
 

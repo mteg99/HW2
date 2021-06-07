@@ -1,6 +1,5 @@
 import numpy as np
 import random
-import math
 from matplotlib import pyplot as plt
 from matplotlib.lines import Line2D
 from scipy.optimize import minimize
@@ -55,19 +54,19 @@ def quadratic_z(x):
         z[0][i] = 1
         z[1][i] = x[0][i]
         z[2][i] = x[1][i]
-        z[3][i] = x[0][i] * x[0][i]
+        z[3][i] = x[0][i] ** 2
         z[4][i] = x[0][i] * x[1][i]
-        z[5][i] = x[1][i] * x[1][i]
+        z[5][i] = x[1][i] ** 2
     return z
 
 
 def linear_logistic_function(x, w):
-    wTz = np.matmul(w.T, np.array([1, x[0], x[1]]))
+    wTz = np.matmul(w.T, np.array([[1, x[0], x[1]]]).T)
     return expit(wTz)
 
 
 def quadratic_logistic_function(x, w):
-    wTz = np.matmul(w.T, np.array([1, x[0], x[1], x[0] * x[0], x[0] * x[1], x[1] * x[1]]))
+    wTz = np.matmul(w.T, np.array([[1, x[0], x[1], x[0] * x[0], x[0] * x[1], x[1] * x[1]]]).T)
     return expit(wTz)
 
 
@@ -83,11 +82,11 @@ def logistic_regression(train_x, train_l, val_x, val_l, title, quadratic=False):
     if quadratic:
         h = quadratic_logistic_function
         z = quadratic_z
-        w = np.array([0, 0, 0, 0, 0, 0])
+        w = np.array([[0, 0, 0, 0, 0, 0]]).T
     else:
         h = linear_logistic_function
         z = linear_z
-        w = np.array([0, 0, 0])
+        w = np.array([[0, 0, 0]]).T
 
     sol = minimize(cost, w, args=(train_x, train_l, h))
     w = sol.x
