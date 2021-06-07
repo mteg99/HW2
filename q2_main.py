@@ -1,5 +1,6 @@
 import numpy as np
 from matplotlib import pyplot as plt
+from matplotlib.lines import Line2D
 from scipy.optimize import minimize
 from sklearn.metrics import mean_squared_error
 
@@ -28,17 +29,25 @@ x_train, y_train, x_val, y_val = hw2q2()
 sol = minimize(q2.map_evaluate, np.array(0.000001), args=(x_train, y_train, x_val, y_val))
 print('Min Gamma:')
 print(sol.x)
+print('ML MSE:')
+mse = q2.ml_evaluate(x_train, y_train, x_val, y_val)
+print(mse)
 print('MAP MSE:')
 print(q2.map_evaluate(sol.x, x_train, y_train, x_val, y_val))
 
 gamma = []
-mse = []
-for i in np.arange(0.0000001, 0.0001, 0.0000001):
+ml_mse = []
+map_mse = []
+for i in np.arange(0.0000001, 1, 0.001):
     gamma.append(i)
-    w = q2.map_estimate(i, q2.cubic_z(x_train), y_train)
-    mse.append(mean_squared_error(y_val, np.matmul(w.T, q2.cubic_z(x_val))[0, :]))
-plt.plot(gamma, mse)
+    ml_mse.append(mse)
+    map_mse.append(q2.map_evaluate(i, x_train, y_train, x_val, y_val))
+plt.plot(gamma, map_mse, color='blue')
+plt.plot(gamma, ml_mse, color='red')
+plt.title('MSE of MAP Estimator vs Gamma')
+plt.legend(
+        handles=[Line2D([0], [0], color='blue', label='MAP MSE', markersize=10),
+                 Line2D([0], [0], color='red', label='ML MSE', markersize=10)])
 plt.show()
 
-print('ML MSE:')
-print(q2.ml_evaluate(x_train, y_train, x_val, y_val))
+

@@ -103,4 +103,9 @@ def logistic_regression(train_x, train_l, val_x, val_l, title, quadratic=False):
     plt.scatter(L0[0], L0[1], marker='o', color=colors0)
     plt.scatter(L1[0], L1[1], marker='^', color=colors1)
     plt.title(title)
+    plt.legend(
+        handles=[Line2D([0], [0], marker='o', color='w', label='Class 0 Hit', markerfacecolor='green', markersize=10),
+                 Line2D([0], [0], marker='o', color='w', label='Class 0 Miss', markerfacecolor='red', markersize=10),
+                 Line2D([0], [0], marker='^', color='w', label='Class 1 Hit', markerfacecolor='green', markersize=10),
+                 Line2D([0], [0], marker='^', color='w', label='Class 1 Miss', markerfacecolor='red', markersize=10)])
     plt.show()
